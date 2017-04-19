@@ -61,12 +61,111 @@
 
     <li class="apidocModuleLi"><a href="#apidoc.module.serialize-javascript">module serialize-javascript</a><ol>
 
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.serialize-javascript.serialize-javascript">
+            function <span class="apidocSignatureSpan"></span>serialize-javascript
+            <span class="apidocSignatureSpan">(obj, options)</span>
+            </a>
+
+        </li>
+
     </ol></li>
 
 </ol></div>
 
 <div class="apidocSectionDiv">
 <h1><a href="#apidoc.module.serialize-javascript" id="apidoc.module.serialize-javascript">module serialize-javascript</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.serialize-javascript.serialize-javascript" id="apidoc.element.serialize-javascript.serialize-javascript">
+        function <span class="apidocSignatureSpan"></span>serialize-javascript
+        <span class="apidocSignatureSpan">(obj, options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function serialize(obj, options) {
+    options || (options = {});
+
+    // Backwards-compatability for `space` as the second argument.
+    if (typeof options === &#x27;number&#x27; || typeof options === &#x27;string&#x27;) {
+        options = {space: options};
+    }
+
+    var functions = [];
+    var regexps   = [];
+
+    // Returns placeholders for functions and regexps (identified by index)
+    // which are later replaced by their string representation.
+    function replacer(key, value) {
+        if (!value) {
+            return value;
+        }
+
+        var type = typeof value;
+
+        if (type === &#x27;object&#x27;) {
+            if (isRegExp(value)) {
+                return &#x27;@__R-&#x27; + UID + &#x27;-&#x27; + (regexps.push(value) - 1) + &#x27;__@&#x27;;
+            }
+
+            return value;
+        }
+
+        if (type === &#x27;function&#x27;) {
+            return &#x27;@__F-&#x27; + UID + &#x27;-&#x27; + (functions.push(value) - 1) + &#x27;__@&#x27;;
+        }
+
+        return value;
+    }
+
+    var str;
+
+    // Creates a JSON string representation of the value.
+    // NOTE: Node 0.12 goes into slow mode with extra JSON.stringify() args.
+    if (options.isJSON &#x26;&#x26; !options.space) {
+        str = JSON.stringify(obj);
+    } else {
+        str = JSON.stringify(obj, options.isJSON ? null : replacer, options.space);
+    }
+
+    // Protects against `JSON.stringify()` returning `undefined`, by serializing
+    // to the literal string: &#x22;undefined&#x22;.
+    if (typeof str !== &#x27;string&#x27;) {
+        return String(str);
+    }
+
+    // Replace unsafe HTML and invalid JavaScript line terminator chars with
+    // their safe Unicode char counterpart. This _must_ happen before the
+    // regexps and functions are serialized and added back to the string.
+    str = str.replace(UNSAFE_CHARS_REGEXP, escapeUnsafeChars);
+
+    if (functions.length === 0 &#x26;&#x26; regexps.length === 0) {
+        return str;
+    }
+
+    // Replaces all occurrences of function and regexp placeholders in the JSON
+    // string with their string representations. If the original value can not
+    // be found, then `undefined` is used.
+    return str.replace(PLACE_HOLDER_REGEXP, function (match, type, valueIndex) {
+        if (type === &#x27;R&#x27;) {
+            return regexps[valueIndex].toString();
+        }
+
+        var fn           = functions[valueIndex];
+        var serializedFn = fn.toString();
+
+        if (IS_NATIVE_CODE_REGEXP.test(serializedFn)) {
+            throw new TypeError(&#x27;Serializing native function: &#x27; + fn.name);
+        }
+
+        return serializedFn;
+    });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
 
 </div>
 

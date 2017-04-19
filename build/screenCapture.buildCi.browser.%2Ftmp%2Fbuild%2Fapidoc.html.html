@@ -1,4 +1,4 @@
-<div class="apidocDiv">
+<html><head></head><body><div class="apidocDiv">
 <style>
 /*csslint
 */
@@ -47,17 +47,10 @@
 }
 </style>
 <h1>api documentation for
-    <a
-
-        href="https://github.com/yahoo/serialize-javascript"
-
-    >serialize-javascript (v1.3.0)</a>
+    <a href="https://github.com/yahoo/serialize-javascript">serialize-javascript (v1.3.0)</a>
 </h1>
 <h4>Serialize JavaScript to a superset of JSON that includes regular expressions and functions.</h4>
-<div class="apidocSectionDiv"><a
-    href="#apidoc.tableOfContents"
-    id="apidoc.tableOfContents"
-><h1>table of contents</h1></a><ol>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
 
     <li class="apidocModuleLi"><a href="#apidoc.module.serialize-javascript">module serialize-javascript</a><ol>
 
@@ -89,7 +82,7 @@
     options || (options = {});
 
     // Backwards-compatability for `space` as the second argument.
-    if (typeof options === &#x27;number&#x27; || typeof options === &#x27;string&#x27;) {
+    if (typeof options === 'number' || typeof options === 'string') {
         options = {space: options};
     }
 
@@ -105,16 +98,16 @@
 
         var type = typeof value;
 
-        if (type === &#x27;object&#x27;) {
+        if (type === 'object') {
             if (isRegExp(value)) {
-                return &#x27;@__R-&#x27; + UID + &#x27;-&#x27; + (regexps.push(value) - 1) + &#x27;__@&#x27;;
+                return '@__R-' + UID + '-' + (regexps.push(value) - 1) + '__@';
             }
 
             return value;
         }
 
-        if (type === &#x27;function&#x27;) {
-            return &#x27;@__F-&#x27; + UID + &#x27;-&#x27; + (functions.push(value) - 1) + &#x27;__@&#x27;;
+        if (type === 'function') {
+            return '@__F-' + UID + '-' + (functions.push(value) - 1) + '__@';
         }
 
         return value;
@@ -124,15 +117,15 @@
 
     // Creates a JSON string representation of the value.
     // NOTE: Node 0.12 goes into slow mode with extra JSON.stringify() args.
-    if (options.isJSON &#x26;&#x26; !options.space) {
+    if (options.isJSON &amp;&amp; !options.space) {
         str = JSON.stringify(obj);
     } else {
         str = JSON.stringify(obj, options.isJSON ? null : replacer, options.space);
     }
 
     // Protects against `JSON.stringify()` returning `undefined`, by serializing
-    // to the literal string: &#x22;undefined&#x22;.
-    if (typeof str !== &#x27;string&#x27;) {
+    // to the literal string: "undefined".
+    if (typeof str !== 'string') {
         return String(str);
     }
 
@@ -141,7 +134,7 @@
     // regexps and functions are serialized and added back to the string.
     str = str.replace(UNSAFE_CHARS_REGEXP, escapeUnsafeChars);
 
-    if (functions.length === 0 &#x26;&#x26; regexps.length === 0) {
+    if (functions.length === 0 &amp;&amp; regexps.length === 0) {
         return str;
     }
 
@@ -149,7 +142,7 @@
     // string with their string representations. If the original value can not
     // be found, then `undefined` is used.
     return str.replace(PLACE_HOLDER_REGEXP, function (match, type, valueIndex) {
-        if (type === &#x27;R&#x27;) {
+        if (type === 'R') {
             return regexps[valueIndex].toString();
         }
 
@@ -157,7 +150,7 @@
         var serializedFn = fn.toString();
 
         if (IS_NATIVE_CODE_REGEXP.test(serializedFn)) {
-            throw new TypeError(&#x27;Serializing native function: &#x27; + fn.name);
+            throw new TypeError('Serializing native function: ' + fn.name);
         }
 
         return serializedFn;
@@ -175,3 +168,4 @@
     ]
 </div>
 </div>
+</body></html>
