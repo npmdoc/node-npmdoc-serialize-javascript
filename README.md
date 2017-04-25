@@ -1,6 +1,6 @@
 # npmdoc-serialize-javascript
 
-#### api documentation for  [serialize-javascript (v1.3.0)](https://github.com/yahoo/serialize-javascript)  [![npm package](https://img.shields.io/npm/v/npmdoc-serialize-javascript.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-serialize-javascript) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-serialize-javascript.svg)](https://travis-ci.org/npmdoc/node-npmdoc-serialize-javascript)
+#### basic api documentation for  [serialize-javascript (v1.3.0)](https://github.com/yahoo/serialize-javascript)  [![npm package](https://img.shields.io/npm/v/npmdoc-serialize-javascript.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-serialize-javascript) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-serialize-javascript.svg)](https://travis-ci.org/npmdoc/node-npmdoc-serialize-javascript)
 
 #### Serialize JavaScript to a superset of JSON that includes regular expressions and functions.
 
@@ -67,7 +67,8 @@
         "benchmark": "node -v && node test/benchmark/serialize.js",
         "test": "istanbul cover -- ./node_modules/mocha/bin/_mocha test/unit/ --reporter spec"
     },
-    "version": "1.3.0"
+    "version": "1.3.0",
+    "bin": {}
 }
 ```
 
